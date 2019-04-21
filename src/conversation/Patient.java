@@ -3,13 +3,9 @@ package conversation;
 import interfaces.*;
 import java.util.Random;
 
-public interface IPatient extends IResponder, IResponderReceptacle {
-    public void connect();
-    public String ask();
-    public boolean finalAnswer();
-}
 
-public class Patient implements IPatient {
+
+public class Patient implements IResponder {
     private int patientN = 0;
     private ITableProducer producer;
     private String attributes[];
@@ -29,11 +25,12 @@ public class Patient implements IPatient {
     }
     
     public String ask(String question) {
-        String result;
+        String result=null;
         for (int a = 0; a < attributes.length - 1; a++)
             if (question.toLowerCase().contains(attributes[a])){
                 if (patientInstance[a].equals("t")){
                     result = "yes";
+                }
                 else if(patientInstance[a].equals("f")){
                     result = "no";
                 }
@@ -50,4 +47,5 @@ public class Patient implements IPatient {
             result = true;
         return result;
     }
-}
+ }
+
