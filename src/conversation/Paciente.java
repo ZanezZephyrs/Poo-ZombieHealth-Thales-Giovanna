@@ -9,7 +9,7 @@ public class Patient implements IResponder {
     private String attributes[];
     private String patientInstance[];
     
-    public void receive(ITableProducer producer) {
+    public void connect(ITableProducer producer) {
         this.producer = producer;
 
         attributes = producer.requestAttributes();
