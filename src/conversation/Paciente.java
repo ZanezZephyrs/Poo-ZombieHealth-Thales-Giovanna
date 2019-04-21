@@ -3,19 +3,13 @@ package conversation;
 import interfaces.*;
 import java.util.Random;
 
-public interface IPatient extends IResponder, IResponderReceptacle {
-    public void connect();
-    public String ask();
-    public boolean finalAnswer();
-}
-
-public class Patient implements IPatient {
+public class Patient implements IResponder {
     private int patientN = 0;
     private ITableProducer producer;
     private String attributes[];
     private String patientInstance[];
     
-    public void connect(ITableProducer producer) {
+    public void receive(ITableProducer producer) {
         this.producer = producer;
 
         attributes = producer.requestAttributes();
