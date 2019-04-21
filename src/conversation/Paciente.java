@@ -1,3 +1,6 @@
+    
+package conversation;
+import interfaces.*;
 import java.util.Random;
 
 public interface IPatient extends IResponder, IResponderReceptacle {
