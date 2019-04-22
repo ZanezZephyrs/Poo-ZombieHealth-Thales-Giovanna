@@ -3,6 +3,7 @@ import interfaces.*;
 import java.util.ArrayList;
 
 public class Medico implements IResponderReceptacle, IEnquirer {
+		private ITableProducer producer;
 		private IResponder paciente_em_atendimento;
 	 	private String[] respostas;
 	    private ArrayList<String> diagnostic;
@@ -16,6 +17,10 @@ public class Medico implements IResponderReceptacle, IEnquirer {
 			this.paciente_em_atendimento=responder;
 			
 		}
+		
+		public void connect(ITableProducer producer) {
+		     this.producer = producer;
+		}
 	    
 	    public void Mostra_diagnostico() {
 	        System.out.println("possiveis diagnosticos:");
@@ -25,15 +30,7 @@ public class Medico implements IResponderReceptacle, IEnquirer {
 	    }
 	    
 	    public void Diagnosticar(String [][] mat) {
-	        for(int i=0;i<mat.length;i++) {
-	            for(int j=0;j<mat[i].length-1;j++) {       
-	                if(mat[i][j].equalsIgnoreCase(this.respostas[j])==false) {
-	                    break;
-	                }if(j==mat[i].length-2 ) {
-	                    this.diagnostic.add(mat[i][j+1]);
-	                }
-	            }
-	        }
+	     
 	        Mostra_diagnostico();
 	    }
 	
@@ -43,16 +40,25 @@ public class Medico implements IResponderReceptacle, IEnquirer {
 			System.out.println("Nenhum paciente em atendimento");
 			return;
 		}
+		String attributes[] = producer.requestAttributes();
+        String instances[][] = producer.requestInstances();
+		for(int i=0;i<attributes.length;i++) {
+			this.respostas[i]=this.paciente_em_atendimento.ask(attributes[i]);
+		}
+		   for(int i=0;i<instances.length;i++) {
+	            for(int j=0;j<instances[i].length-1;j++) {       
+	                if(instances[i][j].equalsIgnoreCase(this.respostas[j])==false) {
+	                    break;
+	                }if(j==instances[i].length-2 ) {
+	                    this.diagnostic.add(instances[i][j+1]);
+	                }
+	            }
+	        }
 		
-		this.respostas[0]=this.paciente_em_atendimento.ask("tem paralisia?");
-        this.respostas[1]=this.paciente_em_atendimento.ask("tem lingua amarela?");
-        this.respostas[2]=this.paciente_em_atendimento.ask("tem todos os menbro?");
-        this.respostas[3]=this.paciente_em_atendimento.ask("tem dor no peito?");
-        this.respostas[4]=this.paciente_em_atendimento.ask("tem dedos tremulos?");
-        this.respostas[5]=this.paciente_em_atendimento.ask("tem raiva?");
-        this.respostas[6]=this.paciente_em_atendimento.ask("tem historico?");
-        
-        this.paciente_em_atendimento.finalAnswer("algo");
+		
+        for(int i=0;i<diagnostic.size();i++) {
+            this.paciente_em_atendimento.finalAnswer(diagnostic.get(i));
+        }
 		
 	}
 
